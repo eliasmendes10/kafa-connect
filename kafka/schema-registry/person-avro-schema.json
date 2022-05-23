@@ -1,0 +1,12 @@
+{
+    "type": "record",
+    "namespace": "io.confluent.tutorial",
+    "name": "sqlserver.dbo.Persons",
+    "fields": [
+        {"name": "PersonID", "type": "int", "doc": "Campo 1"},
+        {"name": "LastName", "type": "string", "doc": "Campo 2"},
+        {"name": "FirstName", "type": "string", "doc": "Campo 3"},
+        {"name": "Address", "type": "string", "doc": "Campo 4"},
+        {"name": "City", "type": "string", "doc": "Campo 5"}
+        ]
+    }

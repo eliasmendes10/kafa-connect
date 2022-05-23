@@ -83,21 +83,28 @@ services:
         # confluent-hub install --no-prompt confluentinc/kafka-connect-cdc-mssql:latest
         confluent-hub install --no-prompt debezium/debezium-connector-sqlserver:latest
         confluent-hub install --no-prompt debezium/debezium-connector-postgresql:1.8.1
+        confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:latest
         #
         echo "Launching Kafka Connect worker"
         /etc/confluent/docker/run &
         #
         sleep infinity
 
-  # mysql:
-  #   image: mysql:5.7
-  #   command: --server-id=1 --log-bin=/var/lib/mysql/mysql-bin.log
-  #   ports:
-  #     - "33006:3306"
-  #   volumes:
-  #     - ./.docker/mysql:/docker-entrypoint-initdb.d
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=root
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.1.0
+    hostname: schema-registry
+    container_name: schema-registry
+    depends_on:
+      - zookeeper
+      - kafka
+    ports:
+      - "8089:8089"
+    volumes:
+      - ${PWD}/:/etc/tutorial/
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka:9092'
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: WARN
   sqlserver:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment:
